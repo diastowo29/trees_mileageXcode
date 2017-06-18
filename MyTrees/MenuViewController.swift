@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SQLite
 
 protocol SlideMenuDelegate {
     func slideMenuItemSelectedAtIndex(_ index : Int32)
@@ -14,6 +15,8 @@ protocol SlideMenuDelegate {
 
 class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var usercodeLabel: UILabel!
     /**
     *  Array to display menu options
     */
@@ -41,6 +44,8 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        usernameLabel.text = SomethingAwesome.username
+        usercodeLabel.text = SomethingAwesome.usercode
         tblMenuOptions.tableFooterView = UIView()
         // Do any additional setup after loading the view.
     }
@@ -56,8 +61,12 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func updateArrayMenuOptions(){
-        arrayMenuOptions.append(["title":"Home", "icon":"HomeIcon"])
-        arrayMenuOptions.append(["title":"Play", "icon":"PlayIcon"])
+        arrayMenuOptions.append(["title":"My Claim", "icon":"menu_claim"])
+        arrayMenuOptions.append(["title":"Leave of Absence", "icon":"menu_leave"])
+        arrayMenuOptions.append(["title":"Mileage Submission", "icon":"menu_mileage"])
+        arrayMenuOptions.append(["title":"Medical Submission", "icon":"menu_medical"])
+        arrayMenuOptions.append(["title":"FAQ", "icon":"menu_help"])
+        arrayMenuOptions.append(["title":"Logout", "icon":"exitv2"])
         
         tblMenuOptions.reloadData()
     }

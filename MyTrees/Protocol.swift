@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+class Data {
+    var newValue:String = ""
+    
+    func testingReturn () -> String {
+        return newValue
+    }
+}

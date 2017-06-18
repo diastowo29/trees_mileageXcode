@@ -7,29 +7,47 @@
 //
 
 import UIKit
+import SQLite
+
+protocol deleteProtocol {
+    func deleteRowWithId (value: String)
+    func deleteRowat (value: String)
+}
 
 class VoucherEditViewController: UIViewController {
+    
+    var voucherTaxies = Dictionary<String, String>()
+    var voucherID = ""
+    var myDeleteProtocol: deleteProtocol?
+    
+    @IBOutlet weak var voucherNumberFIeld: UITextField!
+    @IBOutlet weak var fromField: UITextField!
+    @IBOutlet weak var toField: UITextField!
+    @IBOutlet weak var priceField: UITextField!
+    @IBOutlet weak var timeField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        print(voucherTaxies)
+        voucherNumberFIeld.text = voucherTaxies["voucher_number"]! 
+        fromField.text = voucherTaxies["from"]!
+        toField.text = voucherTaxies["to"]!
+        priceField.text = voucherTaxies["price"]!
+        timeField.text = voucherTaxies["time"]!
+        
+        voucherID = voucherTaxies["row"]!
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func goBack(_ sender: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
     }
-    */
+    
+    @IBAction func goDeleteVoucher(_ sender: Any) {
+        myDeleteProtocol?.deleteRowWithId(value: self.voucherTaxies["voucher_id"]!)
+        myDeleteProtocol?.deleteRowat(value: voucherID)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    
 
 }

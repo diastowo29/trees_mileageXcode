@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SQLite
 
 class BaseViewController: UIViewController, SlideMenuDelegate {
     
@@ -25,16 +26,22 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
         print("View Controller is : \(topViewController) \n", terminator: "")
         switch(index){
         case 0:
-            print("Home\n", terminator: "")
-
-            self.openViewControllerBasedOnIdentifier("Home")
-            
+            self.openViewControllerBasedOnIdentifier("myClaimView")
             break
         case 1:
-            print("Play\n", terminator: "")
-            
-            self.openViewControllerBasedOnIdentifier("PlayVC")
-            
+            self.openViewControllerBasedOnIdentifier("leaveView")
+            break
+        case 2:
+            self.openViewControllerBasedOnIdentifier("mileageView")
+            break
+        case 3:
+            self.openViewControllerBasedOnIdentifier("medicalView")
+            break
+        case 4:
+            self.openViewControllerBasedOnIdentifier("faqView")
+            break
+        case 5:
+            doLogout()
             break
         default:
             print("default\n", terminator: "")
@@ -124,5 +131,38 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
             menuVC.view.frame=CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
             sender.isEnabled = true
             }, completion:nil)
+    }
+    
+    func doLogout () {
+        print("doLogout")
+        do {
+            let path = NSSearchPathForDirectoriesInDomains(
+                .documentDirectory, .userDomainMask, true
+                ).first!
+            let mileageDb = try Connection("\(path)/db.sqlite3")
+            let users = Table("dummy_users")
+            let id = Expression<Int64>("id")
+            let emp_Name = Expression<String>("employee_name")
+            let emp_Phone = Expression<String>("employee_phone")
+            let emp_Number = Expression<String>("employee_number")
+            let emp_token = Expression<String>("token")
+            
+            try mileageDb.run(users.create(ifNotExists:true) { t in
+                t.column(id, primaryKey: true)
+                t.column(emp_Name)
+                t.column(emp_Phone)
+                t.column(emp_Number)
+                t.column(emp_token)
+            })
+            
+            _ = try mileageDb.run(users.delete())
+            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.popToRootViewController(animated: true)
+//            self.navigationController?.popViewController(animated: true)
+            
+        } catch {
+            print("SQLite Error")
+            print(error.localizedDescription)
+        }
     }
 }

@@ -7,29 +7,40 @@
 //
 
 import UIKit
+import SQLite
+
+protocol createNewVoucher {
+    func createNewVoucherRow(voucher: [String:String])
+}
 
 class VoucherAddNewViewController: UIViewController {
+    
+    @IBOutlet weak var voucherNumberField: UITextField!
+    @IBOutlet weak var fromField: UITextField!
+    @IBOutlet weak var toField: UITextField!
+    @IBOutlet weak var timeFIeld: UITextField!
+    @IBOutlet weak var priceField: UITextField!
+    
+    var trx_id:String = ""
+    var myProtocol:createNewVoucher?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        print(trx_id)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func goSaveVoucher(_ sender: Any) {
+        let voucher_array = [
+            "voucher_number": voucherNumberField.text!,
+            "price": priceField.text!,
+            "from": fromField.text!,
+            "to": toField.text!,
+            "time": timeFIeld.text!,
+            "trx_id": trx_id
+        ]
+        myProtocol?.createNewVoucherRow(voucher: voucher_array as! [String : String])
+        self.navigationController?.popViewController(animated: true)
+        
     }
-    */
-
+    
 }
