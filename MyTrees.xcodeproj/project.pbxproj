@@ -12,6 +12,7 @@
 		3707DDE61EEE3C64001C33AB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3707DDE51EEE3C64001C33AB /* LoginViewController.swift */; };
 		3707DDE81EEE9486001C33AB /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3707DDE71EEE9486001C33AB /* LoadingViewController.swift */; };
 		3707DDF11EEFCAC4001C33AB /* StoreMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3707DDF01EEFCAC3001C33AB /* StoreMe.swift */; };
+		37104C5E1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37104C5D1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift */; };
 		37541CD01EBAE11C0031709F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37541CCF1EBAE11C0031709F /* AppDelegate.swift */; };
 		37541CD21EBAE11C0031709F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37541CD11EBAE11C0031709F /* ViewController.swift */; };
 		37541CD51EBAE11C0031709F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37541CD31EBAE11C0031709F /* Main.storyboard */; };
@@ -124,6 +125,7 @@
 		3707DDE51EEE3C64001C33AB /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3707DDE71EEE9486001C33AB /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		3707DDF01EEFCAC3001C33AB /* StoreMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreMe.swift; sourceTree = "<group>"; };
+		37104C5D1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoucherAddNewMileageViewController.swift; sourceTree = "<group>"; };
 		37541CCC1EBAE11C0031709F /* MyTrees.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTrees.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37541CCF1EBAE11C0031709F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37541CD11EBAE11C0031709F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				37541CD61EBAE11C0031709F /* Assets.xcassets */,
 				37541CD81EBAE11C0031709F /* LaunchScreen.storyboard */,
 				37541CDB1EBAE11C0031709F /* Info.plist */,
+				37104C5D1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift */,
 			);
 			path = MyTrees;
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 				37541D021EBC2B650031709F /* MileageViewController.swift in Sources */,
 				37541CD01EBAE11C0031709F /* AppDelegate.swift in Sources */,
 				3707DDE01EE80135001C33AB /* VoucherAddNewViewController.swift in Sources */,
+				37104C5E1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift in Sources */,
 				37541CFF1EBB04E90031709F /* BaseViewController.swift in Sources */,
 				37541D041EBC2D360031709F /* MedicalViewController.swift in Sources */,
 				3707DDF11EEFCAC4001C33AB /* StoreMe.swift in Sources */,

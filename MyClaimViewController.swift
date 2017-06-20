@@ -22,6 +22,7 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
     var selectRow = [String]()
     var successLog = [Dictionary<String,String>]()
     var errorLog = [String]()
+    var trx_empty = ["mileage": "No Data to Display", "mileage_data": ""]
     var trx_array = [Dictionary<String, Dictionary<String,Any>>()]
     
     override func viewDidLoad() {
@@ -32,8 +33,6 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        deleteLists()
-//        getLists()
         getList()
         tableView.reloadData()
         loadingView.alpha = 0
@@ -163,7 +162,13 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                         "leave_stats": user[leave_stats]
                     ]
                 ]
+                all_voucher_array.removeAll()
                 trx_array.append(new_trx_array)
+                if (trx_array.count == 0){
+                    tableView.isUserInteractionEnabled = false
+                } else {
+                    tableView.isUserInteractionEnabled = true
+                }
             }
             
         } catch {
@@ -202,26 +207,37 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
         editAction.backgroundColor = .gray
         
         let deleteAction = UITableViewRowAction(style: .normal, title: "Delete") { (rowAction, indexPath) in
+            self.deleteRow(delete_id: self.trx_array[indexPath.row]["mileage"]?["id"] as! Int64)
             self.trx_array.remove(at: indexPath.row)
             tableView.reloadData()
         }
         deleteAction.backgroundColor = .red
-        
-        return [editAction,deleteAction]
+        if (trx_array.count > 0) {
+            return [editAction,deleteAction]
+        } else {
+            return nil
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCellAccessoryType.checkmark) {
-            tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCellAccessoryType.none
-            let row = selectRow.index(of: String(indexPath.row))
-            selectRow.remove(at: row!)
-        } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCellAccessoryType.checkmark
-            selectRow.append(String(indexPath.row))        }
+        if (trx_array.count > 0) {
+            if (tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCellAccessoryType.checkmark) {
+                tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCellAccessoryType.none
+                let row = selectRow.index(of: String(indexPath.row))
+                selectRow.remove(at: row!)
+            } else {
+                tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCellAccessoryType.checkmark
+                selectRow.append(String(indexPath.row))
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.trx_array.count;
+        if (trx_array.count > 0) {
+            return self.trx_array.count;
+        } else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -234,13 +250,14 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
             } else {
                 cell.imageView?.image = UIImage(named: "calendar")
             }
+        } else {
+            cell.textLabel?.text = self.trx_empty["mileage"] as? String
+            cell.detailTextLabel?.text = self.trx_empty["mileage_data"] as? String
         }
         return cell
     }
     
     @IBAction func submitClaim(_ sender: Any) {
-        loadingView.alpha = 1
-        loadingIndicator.startAnimating()
         var isLeave = false
         var isMileage = false
         var leaveCount = 0
@@ -254,76 +271,88 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
         formatter.dateFormat = "yyyy-MM-dd"
         let dateResult = formatter.string(from: date)
         claim.removeAll()
-        for trxxx in 0 ..< selectRow.count {
-            let indexRow = Int(selectRow[trxxx])
-            print(trx_array[indexRow!])
-            if ((trx_array[indexRow!]["mileage"]?["tag"] as! String) == "leave") {
-                isLeave = true
-                leaveCount += 1
-            } else {
-                isMileage = true
-                mileageCount += 1
-            }
-        }
-        for trxx in 0 ..< selectRow.count {
-            let indexRow = Int(selectRow[trxx])
-            if ((trx_array[indexRow!]["mileage"]?["tag"] as! String) == "leave") {
-                curr_leaveCount += 1
-                var absenceStats = ""
-                if (trx_array[indexRow!]["mileage"]?["project_code"] as! String).contains("Cuti") {
-                    absenceStats = "1"
+        if (selectRow.count > 0) {
+            loadingView.alpha = 1
+            loadingIndicator.startAnimating()
+            for trxxx in 0 ..< selectRow.count {
+                let indexRow = Int(selectRow[trxxx])
+                print(trx_array[indexRow!])
+                if ((trx_array[indexRow!]["mileage"]?["tag"] as! String) == "leave") {
+                    isLeave = true
+                    leaveCount += 1
                 } else {
-                    absenceStats = "2"
+                    isMileage = true
+                    mileageCount += 1
                 }
-                let absenceDetail = ["date_from": trx_array[indexRow!]["mileage"]?["date"] as! String,
-                               "date_to": trx_array[indexRow!]["mileage"]?["leave_to"] as! String,
-                               "project_number": trx_array[indexRow!]["mileage"]?["project_code"] as! String,
-                               "activity_status": absenceStats,
-                               "created_by": SomethingAwesome.username,
-//                               "creation_date": dateResult
-                    ] as Dictionary<String,String>
-                claiml.append(absenceDetail)
-                if (curr_leaveCount == leaveCount) {
-                    print("postMileage onLeave")
-                    let absence = ["absences": claiml] as Dictionary<String, Any>
-                    postMileage(parametersData: absence, apiUrl: SomethingAwesome.urlAbsenceMany, activity: "leave", countLeave: leaveCount, countMileage: mileageCount, thereisLeave: isLeave, thereisMileage: isMileage)
-                }
-            } else {
-                curr_mileageCount += 1
-//                print(trx_array[indexRow!])
-                let mileageList = trx_array[indexRow!]["mileage"]?["mileage_list"] as! Dictionary<String, Any>
-                let taxiesCount = mileageList["taxies"] as! [Dictionary<String,String>]
-                var taxies = [Dictionary<String,String>]()
-                if (taxiesCount.count) > 0 {
-                    taxies.removeAll()
-                    for i in 0 ..< taxiesCount.count {
-                        let taxiDetail = ["taxi_from": taxiesCount[i]["from"],
-                                          "taxi_to": taxiesCount[i]["to"],
-                                          "taxi_time": taxiesCount[i]["time"],
-                                          "taxi_voucher_no": taxiesCount[i]["voucher_number"],
-                                          "taxi_amount": taxiesCount[i]["price"]] as! Dictionary<String,String>
-                        taxies.append(taxiDetail)
+            }
+            for trxx in 0 ..< selectRow.count {
+                let indexRow = Int(selectRow[trxx])
+                if ((trx_array[indexRow!]["mileage"]?["tag"] as! String) == "leave") {
+                    curr_leaveCount += 1
+                    var absenceStats = ""
+                    if (trx_array[indexRow!]["mileage"]?["project_code"] as! String).contains("Cuti") {
+                        absenceStats = "1"
+                    } else {
+                        absenceStats = "2"
+                    }
+                    let absenceDetail = ["date_from": trx_array[indexRow!]["mileage"]?["date"] as! String,
+                                         "date_to": trx_array[indexRow!]["mileage"]?["leave_to"] as! String,
+                                         "project_number": trx_array[indexRow!]["mileage"]?["project_code"] as! String,
+                                         "activity_status": absenceStats,
+                                         "created_by": SomethingAwesome.username,
+                                         //                               "creation_date": dateResult
+                        ] as Dictionary<String,String>
+                    claiml.append(absenceDetail)
+                    if (curr_leaveCount == leaveCount) {
+                        print("postMileage onLeave")
+                        let absence = ["absences": claiml] as Dictionary<String, Any>
+                        postMileage(parametersData: absence, apiUrl: SomethingAwesome.urlAbsenceMany, activity: "leave", countLeave: leaveCount, countMileage: mileageCount, thereisLeave: isLeave, thereisMileage: isMileage)
+                    }
+                } else {
+                    curr_mileageCount += 1
+                    //                print(trx_array[indexRow!])
+                    let mileageList = trx_array[indexRow!]["mileage"]?["mileage_list"] as! Dictionary<String, Any>
+                    let taxiesCount = mileageList["taxies"] as! [Dictionary<String,String>]
+                    var taxies = [Dictionary<String,String>]()
+                    if (taxiesCount.count) > 0 {
+                        taxies.removeAll()
+                        for i in 0 ..< taxiesCount.count {
+                            let taxiDetail = ["taxi_from": taxiesCount[i]["from"],
+                                              "taxi_to": taxiesCount[i]["to"],
+                                              "taxi_time": taxiesCount[i]["time"],
+                                              "taxi_voucher_no": taxiesCount[i]["voucher_number"],
+                                              "taxi_amount": taxiesCount[i]["price"]] as! Dictionary<String,String>
+                            taxies.append(taxiDetail)
+                        }
+                    }
+                    let claimDetail = ["claim_date":trx_array[indexRow!]["mileage"]?["date"] as! String,
+                                       "activity_code": trx_array[indexRow!]["mileage"]?["activity"] as! String,
+                                       "toll_from": mileageList["tol_office"] as! String,
+                                       "toll_to": mileageList["tol_client"] as! String,
+                                       "mileage": trx_array[indexRow!]["mileage"]?["project_distance"] as! String,
+                                       "parking": mileageList["parking"] as! String,
+                                       "client_code": trx_array[indexRow!]["mileage"]?["project_code"] as! String,
+                                       "meal": mileageList["meal"] as! String,
+                                       "created_by": SomethingAwesome.username,
+                                       //                                   "creation_date": dateResult,
+                        "claim_details": taxies] as Dictionary<String,Any>
+                    claim.append(claimDetail)
+                    if (curr_mileageCount == mileageCount) {
+                        print("postMileage onMileage")
+                        let mainClaim = ["claim_headers": claim] as Dictionary<String,Any>
+                        postMileage(parametersData: mainClaim, apiUrl: SomethingAwesome.urlMileageMany, activity: "mileage", countLeave: leaveCount, countMileage: mileageCount, thereisLeave: isLeave, thereisMileage: isMileage)
                     }
                 }
-                let claimDetail = ["claim_date":trx_array[indexRow!]["mileage"]?["date"] as! String,
-                                   "activity_code": trx_array[indexRow!]["mileage"]?["activity"] as! String,
-                                   "toll_from": mileageList["tol_office"] as! String,
-                                   "toll_to": mileageList["tol_client"] as! String,
-                                   "mileage": trx_array[indexRow!]["mileage"]?["project_distance"] as! String,
-                                   "parking": mileageList["parking"] as! String,
-                                   "client_code": trx_array[indexRow!]["mileage"]?["project_code"] as! String,
-                                   "meal": mileageList["meal"] as! String,
-                                   "created_by": SomethingAwesome.username,
-//                                   "creation_date": dateResult,
-                                   "claim_details": taxies] as Dictionary<String,Any>
-                claim.append(claimDetail)
-                if (curr_mileageCount == mileageCount) {
-                    print("postMileage onMileage")
-                    let mainClaim = ["claim_headers": claim] as Dictionary<String,Any>
-                    postMileage(parametersData: mainClaim, apiUrl: SomethingAwesome.urlMileageMany, activity: "mileage", countLeave: leaveCount, countMileage: mileageCount, thereisLeave: isLeave, thereisMileage: isMileage)
-                }
             }
+        } else {
+            let checkEmptyAlert = UIAlertController(title: "Error", message: "No data was checked", preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
+                checkEmptyAlert.dismiss(animated: true, completion: nil)
+            }
+            checkEmptyAlert.addAction(confirmAction)
+            present(checkEmptyAlert, animated: true, completion: nil)
         }
+        
     }
     
     func postMileage (parametersData: Dictionary<String, Any>, apiUrl: String, activity: String, countLeave: Int, countMileage: Int, thereisLeave: Bool, thereisMileage: Bool) {
@@ -368,7 +397,7 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                         print(json)
                         self.submitSuccess(activity: activity, mark: "error", totalData: totalData)
                     } else {
-                        print(json["status_code"])
+                        print(json["status_code"] ?? "status code is EMPTY")
                         self.submitSuccess(activity: activity, mark: "success", totalData: totalData)
                     }
                 }
@@ -391,7 +420,8 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                 let indexRow = Int(selectRow[trxx])
                 print(trx_array[indexRow!]["mileage"]?["tag"] as! String)
                 if (trx_array[indexRow!]["mileage"]?["tag"] as! String == activity) {
-                    print(trx_array[indexRow!]["mileage"]?["id"])
+//                    print(trx_array[indexRow!]["mileage"]?["id"] as! Int64)
+                    deleteRow(delete_id: trx_array[indexRow!]["mileage"]?["id"] as! Int64)
                 }
             }
         }
@@ -406,6 +436,8 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                 alertController2.dismiss(animated: true, completion: nil)
                 self.loadingView.alpha = 0
                 self.loadingIndicator.stopAnimating()
+                self.getList()
+                self.tableView.reloadData()
             }
             alertController2.addAction(confirmAction)
             present(alertController2, animated: true, completion: nil)
@@ -413,13 +445,24 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
         }
     }
     
-    func submitError () {
-        let alertController2 = UIAlertController(title: "Error", message: "Your request contains an error. Please check..", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
-            alertController2.dismiss(animated: true, completion: nil)
+    func deleteRow (delete_id: Int64) {
+        print("deleting taxi voucher with id \(delete_id)")
+        do {
+            let path = NSSearchPathForDirectoriesInDomains(
+                .documentDirectory, .userDomainMask, true
+                ).first!
+            let mileageDb = try Connection("\(path)/db.sqlite3")
+            
+            let taxi_table = Table("dummy_devs")
+            let id = Expression<Int64>("id")
+            
+            let deleteThisRow = taxi_table.filter(id == delete_id)
+            try mileageDb.run(deleteThisRow.delete())
+            
+        } catch {
+            print("SQLite Error")
+            print(error.localizedDescription)
         }
-        alertController2.addAction(confirmAction)
-        present(alertController2, animated: true, completion: nil)
     }
     
 }

@@ -33,6 +33,9 @@ class LoginViewController: UIViewController {
             loadingIndicator.stopAnimating()
             let user = data["user"] as? [String:String]
             self.saveCredit(cellNo: user?["cell_no"] as! String, empName: user?["employee_name"] as! String, empNumber: user?["employee_number"] as! String, token: data["access_token"] as! String)
+            SomethingAwesome.usercode = user?["employee_number"] as! String
+            SomethingAwesome.username = user?["employee_name"] as! String
+            SomethingAwesome.token = data["access_token"] as! String
             self.deleteLists()
         } else {
             errorNotFound()
@@ -148,11 +151,6 @@ class LoginViewController: UIViewController {
         task.resume()
     }
     
-    func testingFunction () {
-        print("testing")
-        
-    }
-    
     func saveList (listCode: String, listName: String, listDistance: String, listType: String) {
         print("saveList")
         do {
@@ -245,6 +243,7 @@ class LoginViewController: UIViewController {
                              emp_Number <- empNumber,
                              emp_Phone <- cellNo,
                              emp_token <- token)
+            print(insert)
             _ = try mileageDb.run(insert)
             
         } catch {

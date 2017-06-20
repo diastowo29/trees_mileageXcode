@@ -42,5 +42,4 @@ class VoucherAddNewViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
         
     }
-    
 }

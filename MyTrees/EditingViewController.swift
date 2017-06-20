@@ -38,7 +38,11 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tolClient: UITextField!
     @IBOutlet weak var distanceField: UITextField!
     @IBOutlet weak var hiddenProjectCode: UILabel!
+    @IBOutlet weak var voucherTable: UITableView!
+    @IBOutlet weak var otherProjectFieldContraint: NSLayoutConstraint!
     
+    
+    @IBOutlet weak var addTaxiBtn: UIButton!
     @IBOutlet weak var mealSwitch: UISwitch!
     @IBOutlet weak var personalSwitch: UISwitch!
     @IBOutlet weak var parkingSwitch: UISwitch!
@@ -53,15 +57,34 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        let toolBar = UIToolbar()
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.isTranslucent = true
+        toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+        toolBar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditingViewController.doneToolbar))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditingViewController.doneToolbar))
+        
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
         let mileageList = self.trx["mileage"]?["mileage_list"] as? [String:AnyObject]
         
         dateField.isUserInteractionEnabled = false
         dateField.backgroundColor = disableColor
         dateField.text = self.trx["mileage"]?["date"] as? String
         activityField.text = self.trx["mileage"]?["activity"] as? String
-        projectField.text = self.trx["mileage"]?["project"] as? String
         hiddenProjectCode.text = self.trx["mileage"]?["project_code"] as? String
         distanceField.text = self.trx["mileage"]?["project_distance"] as? String
+        if ((self.trx["mileage"]?["project_code"] as! String) == "other") {
+            otherProjectField.text = self.trx["mileage"]?["project"] as? String
+            projectField.text = "Other"
+            otherProjectFieldContraint.constant = 30
+        } else {
+            projectField.text = self.trx["mileage"]?["project"] as? String
+            otherProjectFieldContraint.constant = 0
+        }
         
         if (mileageList!["meal"]? .isEqual(to: ""))! {
             mealSwitch.isOn = false
@@ -114,6 +137,24 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         newProjectPicker.delegate = self as? UIPickerViewDelegate
         newProjectPicker.dataSource = self as? UIPickerViewDataSource
         projectField.inputView = newProjectPicker
+        
+        activityField.inputAccessoryView = toolBar
+        projectField.inputAccessoryView = toolBar
+        otherProjectField.inputAccessoryView = toolBar
+        mealPrice.inputAccessoryView = toolBar
+        parkingPrice.inputAccessoryView = toolBar
+        tolClient.inputAccessoryView = toolBar
+        tolOffice.inputAccessoryView = toolBar
+    }
+    
+    func doneToolbar () {
+        activityField.resignFirstResponder()
+        projectField.resignFirstResponder()
+        otherProjectField.resignFirstResponder()
+        mealPrice.resignFirstResponder()
+        parkingPrice.resignFirstResponder()
+        tolClient.resignFirstResponder()
+        tolOffice.resignFirstResponder()
     }
     
     @IBAction func activityEditEnd(_ sender: UITextField) {
@@ -129,6 +170,16 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
             } else {
                 usePickerData = customerPickerData
             }
+        }
+    }
+    
+    @IBAction func taxiSwitched(_ sender: UISwitch) {
+        if (sender.isOn) {
+            voucherTable.isUserInteractionEnabled = true
+            addTaxiBtn.isEnabled = true
+        } else {
+            voucherTable.isUserInteractionEnabled = false
+            addTaxiBtn.isEnabled = false
         }
     }
     
@@ -318,7 +369,6 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
             print("SQLite Error")
             print(error.localizedDescription)
         }
-
     }
     
     override func viewWillAppear(_ animated: Bool) {

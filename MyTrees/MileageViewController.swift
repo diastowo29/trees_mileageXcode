@@ -3,7 +3,7 @@ import UIKit
 import SQLite
 import Foundation
 
-class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource {
+class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource, createNewVoucherMileage {
 
     let myPickerData = ["-Activity-", "Project", "Sales / Pre-sales", "Office"]
     var projectPickerData = [Dictionary<String,String>]()
@@ -46,6 +46,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var parkingSwitch: UISwitch!
     @IBOutlet weak var tolSwitch: UISwitch!
     @IBOutlet weak var taxiSwitch: UISwitch!
+    @IBOutlet weak var addTaxiButton: UIButton!
     
     var voucherTaxiDict = Dictionary<String,String>()
     
@@ -91,7 +92,6 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         tolFromOfficeField.inputAccessoryView = toolBar
         tolFromClientField.inputAccessoryView = toolBar
         
-//        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -145,14 +145,20 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
     }
     
     func donePicker (){
-        let datePicker = UIDatePicker()
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateStyle = .long
-        dateField.text = timeFormatter.string(from: datePicker.date)
+//        let datePicker = UIDatePicker()
+//        let timeFormatter = DateFormatter()
+//        timeFormatter.dateStyle = .long
+//        dateField.text = timeFormatter.string(from: datePicker.date)
         
         activityField.resignFirstResponder()
         projectListField.resignFirstResponder()
         dateField.resignFirstResponder()
+    }
+    
+    func createNewVoucherRowMileage(voucher: [String:String]) {
+        print(voucher)
+        self.voucherTaxiArray.append(voucher)
+        self.myTableView.reloadData()
     }
     
     @IBAction func activityDidEnd(_ sender: UITextField) {
@@ -229,20 +235,21 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
     @IBAction func taxiSwitched(_ sender: UISwitch) {
         if (sender.isOn) {
             taxiContainer.alpha = 1
-            taxiContainerHeight.constant = 33
-            childViewHeight.constant = childViewHeight.constant + 33
+            addTaxiButton.isEnabled = true
             
-            taxiVoucherTableHeight.constant = 100
+//            taxiVoucherTableHeight.constant = 100
             taxiVoucherTable.alpha = 1
-            childViewHeight.constant = childViewHeight.constant + 100
+//            childViewHeight.constant = childViewHeight.constant + 100
         } else {
+            self.voucherTaxiArray.removeAll()
             taxiContainer.alpha = 0
-            taxiContainerHeight.constant = 0
-            childViewHeight.constant = childViewHeight.constant - 33
+            addTaxiButton.isEnabled = true
+//            taxiContainerHeight.constant = 0
+//            childViewHeight.constant = childViewHeight.constant - 33
             
-            taxiVoucherTableHeight.constant = 0
+//            taxiVoucherTableHeight.constant = 0
             taxiVoucherTable.alpha = 0
-            childViewHeight.constant = childViewHeight.constant - 100
+//            childViewHeight.constant = childViewHeight.constant - 100
         }
     }
     
@@ -344,64 +351,9 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         
     }
     @IBAction func addTaxiVoucher(_ sender: UIButton) {
-        let alertController = UIAlertController(title: "Voucher?", message: "Please input your voucher detail:", preferredStyle: .alert)
-        
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
-            if let field = alertController.textFields![0] as? UITextField {
-                // store your data
-                UserDefaults.standard.set(field.text, forKey: "userEmail")
-                UserDefaults.standard.synchronize()
-                
-                let voucherArray = [
-                    "voucherNumber": alertController.textFields![0].text!,
-                    "price": alertController.textFields![1].text!,
-                    "from": alertController.textFields![2].text!,
-                    "to": alertController.textFields![3].text!,
-                    "time": alertController.textFields![4].text!
-                ]
-                self.voucherTaxiArray.append(voucherArray)
-//                print(self.voucherTaxiArray)
-                self.myTableView.reloadData()
-            } else {
-                // user did not fill field
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Voucher Number"
-        }
-        alertController.addTextField { (textField) in
-            textField.placeholder = "IDR"
-            textField.keyboardType = .decimalPad
-        }
-        alertController.addTextField { (textField) in
-            textField.placeholder = "From"
-        }
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Destination"
-        }
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Time Arrival"
-            let datePicker:UIDatePicker = UIDatePicker()
-            datePicker.datePickerMode = UIDatePickerMode.time
-            let toolBar = UIToolbar()
-            toolBar.barStyle = UIBarStyle.default
-            toolBar.isTranslucent = true
-            toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
-            toolBar.sizeToFit()
-            let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(MileageViewController.donePicker))
-            toolBar.setItems([doneButton], animated: true)
-            toolBar.isUserInteractionEnabled = true
-            
-            textField.inputView = datePicker
-            textField.inputAccessoryView = toolBar
-        }
-        
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+        let nextViewController = storyboard?.instantiateViewController(withIdentifier: "addNewVoucherMileage") as! VoucherAddNewMileageViewController
+        nextViewController.myProtocol = self
+        self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
     @IBAction func showDate(_ sender: UITextField) {
@@ -435,12 +387,19 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         var taxies = Dictionary<String,AnyObject>()
         taxies["taxies"] = self.voucherTaxiArray as AnyObject
         
+        var projectTyped = ""
+        if (projectListField.text == "Other") {
+            projectTyped = otherProjectField.text!
+        } else {
+            projectTyped = projectListField.text!
+        }
+        
         let myNewArray = [
             "mileage":[
                 "name": SomethingAwesome.usercode,
                 "date": dateField.text ?? "Empty" as String,
-                "activity": activityField.text as! String,
-                "project": projectListField.text ?? "Empty" as String,
+                "activity": activityField.text!,
+                "project": projectTyped,
                 "project_code": hiddenProjectCode.text ?? "Empty" as String,
                 "project_distance": distanceField.text ?? "Empty" as String,
                 "mileage_list":[
@@ -452,7 +411,6 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
                 ]
             ]
         ]
-        
         dbProcess(data: myNewArray)
     }
     
@@ -538,9 +496,10 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
                              leave_project <- "",
                              leave_stats <- "")
             let row_id = try mileageDb.run(insert)
+            print(row_id)
             
             for i in 0 ..< taxiesData.count {
-                let taxiInsert = taxi_table.insert(taxi_voucher <- taxiesData[i]["voucherNumber"]!,
+                let taxiInsert = taxi_table.insert(taxi_voucher <- taxiesData[i]["voucher_number"]!,
                                                    taxi_amount <- taxiesData[i]["price"]!,
                                                    taxi_from <- taxiesData[i]["from"]!,
                                                    taxi_to <- taxiesData[i]["to"]!,
@@ -577,7 +536,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         print(voucherTaxiArray.count)
         if (voucherTaxiArray.count > 0) {
-            cell.textLabel?.text = self.voucherTaxiArray[indexPath.row]["voucherNumber"]!
+            cell.textLabel?.text = self.voucherTaxiArray[indexPath.row]["voucher_number"]!
             cell.detailTextLabel?.text = self.voucherTaxiArray[indexPath.row]["price"]!
         } else {
             cell.textLabel?.text = self.items[indexPath.row]
@@ -607,43 +566,4 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         
         self.present(alertController, animated: true, completion: nil)
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        registerKeyboardNotifications()
-//    }
-//    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        unregisterKeyboardNotifications()
-//    }
-//    
-//    func registerKeyboardNotifications() {
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(MileageViewController.keyboardDidShow(notification:)),
-//                                               name: NSNotification.Name.UIKeyboardDidShow,
-//                                               object: nil)
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(MileageViewController.keyboardWillHide(notification:)),
-//                                               name: NSNotification.Name.UIKeyboardWillHide,
-//                                               object: nil)
-//    }
-//    
-//    func unregisterKeyboardNotifications() {
-//        NotificationCenter.default.removeObserver(self)
-//    }
-//    
-//    func keyboardDidShow(notification: NSNotification) {
-//        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
-//        let keyboardInfo = userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue
-//        let keyboardSize = keyboardInfo.cgRectValue.size
-//        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
-//        scrollView.contentInset = contentInsets
-//        scrollView.scrollIndicatorInsets = contentInsets
-//    }
-//    
-//    func keyboardWillHide(notification: NSNotification) {
-//        scrollView.contentInset = UIEdgeInsets.zero
-//        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
-//    }
 }
