@@ -139,6 +139,24 @@ class ViewController: BaseViewController , UIPickerViewDelegate, UIPickerViewDat
         dbProcess()
     }
     
+    @IBAction func fromDidBegin(_ sender: UITextField) {
+        giveTodayDate(sender: sender)
+    }
+    
+    @IBAction func toDidBegin(_ sender: UITextField) {
+        giveTodayDate(sender: sender)
+    }
+    
+    
+    func giveTodayDate (sender: UITextField) {
+        let uiDate = UIDatePicker()
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateStyle = .long
+        if (sender.text?.isEmpty)! {
+            sender.text = timeFormatter.string(from: uiDate.date)
+        }
+    }
+    
     func dbProcess() {
         do {
             let path = NSSearchPathForDirectoriesInDomains(

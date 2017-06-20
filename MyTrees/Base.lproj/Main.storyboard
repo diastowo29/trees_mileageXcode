@@ -43,6 +43,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                 <connections>
+                                                    <action selector="fromDidBegin:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="bNw-rO-qJl"/>
                                                     <action selector="showDate:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="6wa-0J-PMU"/>
                                                 </connections>
                                             </textField>
@@ -62,6 +63,7 @@
                                                 <textInputTraits key="textInputTraits"/>
                                                 <connections>
                                                     <action selector="showToDate:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="LNR-qe-p4z"/>
+                                                    <action selector="toDidBegin:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="iUl-F4-rpR"/>
                                                 </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ORx-bb-nkl">
@@ -202,6 +204,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <connections>
+                                                    <action selector="giveTodayDate:" destination="51h-pF-kEz" eventType="editingDidBegin" id="Vt5-Eo-9ez"/>
                                                     <action selector="showDate:" destination="51h-pF-kEz" eventType="editingDidBegin" id="ZsO-Sj-vxI"/>
                                                 </connections>
                                             </textField>
@@ -666,7 +669,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kN7-FF-d6y" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="wTH-nP-TFI">
                     <connections>
-                        <action selector="onTap:" destination="51h-pF-kEz" id="hUO-K9-14y"/>
+                        <action selector="onTap:" destination="51h-pF-kEz" id="exH-Go-RjX"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

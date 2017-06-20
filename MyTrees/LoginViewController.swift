@@ -31,12 +31,14 @@ class LoginViewController: UIViewController {
         if (succeed){
             loadingView.alpha = 0
             loadingIndicator.stopAnimating()
-            let user = data["user"] as? [String:String]
-            self.saveCredit(cellNo: user?["cell_no"] as! String, empName: user?["employee_name"] as! String, empNumber: user?["employee_number"] as! String, token: data["access_token"] as! String)
-            SomethingAwesome.usercode = user?["employee_number"] as! String
-            SomethingAwesome.username = user?["employee_name"] as! String
+            let user = data["user"] as! [String:String]
+            self.saveCredit(cellNo: user["cell_no"]!, empName: user["employee_name"]!, empNumber: user["employee_number"]!, token: data["access_token"] as! String)
+            SomethingAwesome.usercode = user["employee_number"]!
+            SomethingAwesome.username = user["employee_name"]!
             SomethingAwesome.token = data["access_token"] as! String
             self.deleteLists()
+            performSegue(withIdentifier: "loginSuccess", sender: self)
+            
         } else {
             errorNotFound()
         }
@@ -142,7 +144,6 @@ class LoginViewController: UIViewController {
                         }
                     }
                 }
-                self.performSegue(withIdentifier: "loginSuccess", sender: self)
                 
             } catch let error {
                 print(error.localizedDescription)

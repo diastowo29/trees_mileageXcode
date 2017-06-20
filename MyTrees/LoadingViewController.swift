@@ -124,7 +124,6 @@ class LoadingViewController: UIViewController {
                         }
                     }
                 }
-                print("finish")
             } catch let error {
                 print(error.localizedDescription)
             }

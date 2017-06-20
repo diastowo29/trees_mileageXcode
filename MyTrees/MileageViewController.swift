@@ -59,6 +59,8 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         
         projectListField.isUserInteractionEnabled = false
         projectListField.backgroundColor = disableColor
+        parkingSwitch.isEnabled = false
+        tolSwitch.isEnabled = false
         
         let projectPicker:UIPickerView = UIPickerView()
         projectPicker.tag = 1
@@ -92,6 +94,15 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         tolFromOfficeField.inputAccessoryView = toolBar
         tolFromClientField.inputAccessoryView = toolBar
         
+    }
+    
+    @IBAction func giveTodayDate(_ sender: UITextField) {
+        let uiDate = UIDatePicker()
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateStyle = .long
+        if (dateField.text?.isEmpty)! {
+            dateField.text = timeFormatter.string(from: uiDate.date)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -318,6 +329,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         parkingField.resignFirstResponder()
         tolFromOfficeField.resignFirstResponder()
         tolFromClientField.resignFirstResponder()
+        distanceField.resignFirstResponder()
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
