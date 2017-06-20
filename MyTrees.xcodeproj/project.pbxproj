@@ -13,6 +13,7 @@
 		3707DDE81EEE9486001C33AB /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3707DDE71EEE9486001C33AB /* LoadingViewController.swift */; };
 		3707DDF11EEFCAC4001C33AB /* StoreMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3707DDF01EEFCAC3001C33AB /* StoreMe.swift */; };
 		37104C5E1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37104C5D1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift */; };
+		37104C6D1EF8DBFE00613C49 /* MyClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37104C6C1EF8DBFE00613C49 /* MyClaimViewController.swift */; };
 		37541CD01EBAE11C0031709F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37541CCF1EBAE11C0031709F /* AppDelegate.swift */; };
 		37541CD21EBAE11C0031709F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37541CD11EBAE11C0031709F /* ViewController.swift */; };
 		37541CD51EBAE11C0031709F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37541CD31EBAE11C0031709F /* Main.storyboard */; };
@@ -28,7 +29,6 @@
 		376F21C31ECAD60F00C5749C /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376F21B61ECAD2EA00C5749C /* SQLite.framework */; };
 		376F21C41ECAD62900C5749C /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376F21B61ECAD2EA00C5749C /* SQLite.framework */; };
 		376F21C51ECAD62900C5749C /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 376F21B61ECAD2EA00C5749C /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		376F21CA1ECC27F600C5749C /* MyClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376F21C91ECC27F600C5749C /* MyClaimViewController.swift */; };
 		3778C6511EE653BD00AB65F1 /* EditingAbsenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3778C6501EE653BD00AB65F1 /* EditingAbsenceViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +126,7 @@
 		3707DDE71EEE9486001C33AB /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		3707DDF01EEFCAC3001C33AB /* StoreMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreMe.swift; sourceTree = "<group>"; };
 		37104C5D1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoucherAddNewMileageViewController.swift; sourceTree = "<group>"; };
+		37104C6C1EF8DBFE00613C49 /* MyClaimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyClaimViewController.swift; sourceTree = "<group>"; };
 		37541CCC1EBAE11C0031709F /* MyTrees.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTrees.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37541CCF1EBAE11C0031709F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37541CD11EBAE11C0031709F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -145,7 +146,6 @@
 		37541D031EBC2D360031709F /* MedicalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicalViewController.swift; sourceTree = "<group>"; };
 		375A828F1EE13ABA00C6BB7D /* EditingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditingViewController.swift; sourceTree = "<group>"; };
 		376F21AB1ECAD2E700C5749C /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../../../Downloads/SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
-		376F21C91ECC27F600C5749C /* MyClaimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyClaimViewController.swift; path = ../MyClaimViewController.swift; sourceTree = "<group>"; };
 		3778C6501EE653BD00AB65F1 /* EditingAbsenceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditingAbsenceViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -201,7 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				3707DDF01EEFCAC3001C33AB /* StoreMe.swift */,
-				376F21C91ECC27F600C5749C /* MyClaimViewController.swift */,
+				37104C6C1EF8DBFE00613C49 /* MyClaimViewController.swift */,
 				37541CCF1EBAE11C0031709F /* AppDelegate.swift */,
 				375A828F1EE13ABA00C6BB7D /* EditingViewController.swift */,
 				3778C6501EE653BD00AB65F1 /* EditingAbsenceViewController.swift */,
@@ -214,11 +214,11 @@
 				3707DDDF1EE80134001C33AB /* VoucherAddNewViewController.swift */,
 				3707DDE51EEE3C64001C33AB /* LoginViewController.swift */,
 				3707DDE71EEE9486001C33AB /* LoadingViewController.swift */,
+				37104C5D1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift */,
 				37541CD31EBAE11C0031709F /* Main.storyboard */,
 				37541CD61EBAE11C0031709F /* Assets.xcassets */,
 				37541CD81EBAE11C0031709F /* LaunchScreen.storyboard */,
 				37541CDB1EBAE11C0031709F /* Info.plist */,
-				37104C5D1EF7B82500613C49 /* VoucherAddNewMileageViewController.swift */,
 			);
 			path = MyTrees;
 			sourceTree = "<group>";
@@ -455,7 +455,7 @@
 				3707DDE61EEE3C64001C33AB /* LoginViewController.swift in Sources */,
 				37541CD21EBAE11C0031709F /* ViewController.swift in Sources */,
 				375A82901EE13ABA00C6BB7D /* EditingViewController.swift in Sources */,
-				376F21CA1ECC27F600C5749C /* MyClaimViewController.swift in Sources */,
+				37104C6D1EF8DBFE00613C49 /* MyClaimViewController.swift in Sources */,
 				37541D021EBC2B650031709F /* MileageViewController.swift in Sources */,
 				37541CD01EBAE11C0031709F /* AppDelegate.swift in Sources */,
 				3707DDE01EE80135001C33AB /* VoucherAddNewViewController.swift in Sources */,
