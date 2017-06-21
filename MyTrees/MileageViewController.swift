@@ -89,11 +89,6 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         
         projectListField.inputAccessoryView = toolBar
         activityField.inputAccessoryView = toolBar
-        mealFIeld.inputAccessoryView = toolBar
-        parkingField.inputAccessoryView = toolBar
-        tolFromOfficeField.inputAccessoryView = toolBar
-        tolFromClientField.inputAccessoryView = toolBar
-        
     }
     
     @IBAction func giveTodayDate(_ sender: UITextField) {
@@ -214,20 +209,20 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         print(sender.isOn)
         if (sender.isOn) {
             mealPriceHeight.constant = 30
-            childViewHeight.constant = childViewHeight.constant + 30
+            // childViewHeight.constant = childViewHeight.constant + 30
         } else {
             mealPriceHeight.constant = 0
-            childViewHeight.constant = childViewHeight.constant - 30
+            // childViewHeight.constant = childViewHeight.constant - 30
         }
     }
     
     @IBAction func parkingSwitched(_ sender: UISwitch) {
         if (sender.isOn) {
             parkingPriceHeight.constant = 30
-            childViewHeight.constant = childViewHeight.constant + 30
+            // childViewHeight.constant = childViewHeight.constant + 30
         } else {
             parkingPriceHeight.constant = 0
-            childViewHeight.constant = childViewHeight.constant - 30
+            // childViewHeight.constant = childViewHeight.constant - 30
         }
     }
     
@@ -235,11 +230,11 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         if (sender.isOn) {
             tolContainerHeight.constant = 66
             tolContainer.alpha = 1
-            childViewHeight.constant = childViewHeight.constant + 66
+            // childViewHeight.constant = childViewHeight.constant + 66
         } else {
             tolContainerHeight.constant = 0
             tolContainer.alpha = 0
-            childViewHeight.constant = childViewHeight.constant - 66
+            // childViewHeight.constant = childViewHeight.constant - 66
         }
     }
     
@@ -270,7 +265,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
             distanceLabel.alpha = 1
             if(activityField.text?.contains("Office"))! {
                 if (tolSwitch.isOn){
-                    childViewHeight.constant = childViewHeight.constant - 66
+                    // childViewHeight.constant = childViewHeight.constant - 66
                 }
                 tolSwitch.setOn(false, animated: true)
                 tolContainerHeight.constant = 0
@@ -278,7 +273,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
                 tolSwitch.isEnabled = false
             } else {
                 if(!tolSwitch.isOn){
-                    childViewHeight.constant = childViewHeight.constant + 66
+                    // childViewHeight.constant = childViewHeight.constant + 66
                 }
                 tolSwitch.setOn(true, animated: true)
                 tolContainerHeight.constant = 66
@@ -287,7 +282,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
                 
             }
             if(!parkingSwitch.isOn){
-                childViewHeight.constant = childViewHeight.constant + 30
+                // childViewHeight.constant = childViewHeight.constant + 30
             }
             parkingSwitch.setOn(true, animated: true)
             parkingPriceHeight.constant = 30
@@ -296,10 +291,10 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
             distanceField.alpha = 0
             distanceLabel.alpha = 0
             if(parkingSwitch.isOn){
-                childViewHeight.constant = childViewHeight.constant - 30
+                // childViewHeight.constant = childViewHeight.constant - 30
             }
             if(tolSwitch.isOn){
-                childViewHeight.constant = childViewHeight.constant - 66
+                // childViewHeight.constant = childViewHeight.constant - 66
             }
             parkingSwitch.setOn(false, animated: true)
             tolSwitch.setOn(false, animated: true)
@@ -314,10 +309,10 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
     @IBAction func projectEndEdit(_ sender: UITextField) {
         if(sender.text?.contains("Other"))!{
             otherProjectFieldHeight.constant = 30
-            childViewHeight.constant = childViewHeight.constant + 30
+//            childViewHeight.constant = childViewHeight.constant + 30
         } else {
             otherProjectFieldHeight.constant = 0
-            childViewHeight.constant = childViewHeight.constant - 30
+//            childViewHeight.constant = childViewHeight.constant - 30
         }
     }
     
@@ -402,6 +397,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         var projectTyped = ""
         if (projectListField.text == "Other") {
             projectTyped = otherProjectField.text!
+            hiddenProjectCode.text = "Other"
         } else {
             projectTyped = projectListField.text!
         }
@@ -423,7 +419,15 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
                 ]
             ]
         ]
-        dbProcess(data: myNewArray)
+        if (checkDuplicateRow() > 0){
+            let duplicateAlertContr = UIAlertController(title: "Error", message: "Row with same Date and Project is already exist.", preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
+                duplicateAlertContr.dismiss(animated: true, completion: nil)}
+            duplicateAlertContr.addAction(confirmAction)
+            present(duplicateAlertContr, animated: true, completion: nil)
+        } else {
+            dbProcess(data: myNewArray)
+        }
     }
     
     func dbProcess(data:[String:Dictionary<String, Any>]) {
@@ -577,5 +581,59 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         alertController.addAction(confirmAction)
         
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func checkDuplicateRow () -> Int{
+        var count = 0
+        do {
+            let path = NSSearchPathForDirectoriesInDomains(
+                .documentDirectory, .userDomainMask, true
+                ).first!
+            let mileageDb = try Connection("\(path)/db.sqlite3")
+            let users = Table("dummy_devs")
+            let id = Expression<Int64>("id")
+            let name = Expression<String>("name")
+            let new_date = Expression<String>("date")
+            let activity = Expression<String>("activity")
+            let project = Expression<String>("project")
+            let project_code = Expression<String>("project_code")
+            let project_distance = Expression<String>("project_distance")
+            let meal = Expression<String>("meal")
+            let parking = Expression<String>("parking")
+            let toll_office = Expression<String>("toll_office")
+            let toll_client = Expression<String>("toll_client")
+            let tag = Expression<String>("tag")
+            let leave_from = Expression<String>("leave_from")
+            let leave_to = Expression<String>("leave_to")
+            let leave_project = Expression<String>("leave_project")
+            let leave_stats = Expression<String>("leave_stats")
+            
+            try mileageDb.run(users.create(ifNotExists:true) { t in
+                t.column(id, primaryKey: true)
+                t.column(name)
+                t.column(new_date)
+                t.column(activity)
+                t.column(project)
+                t.column(project_code)
+                t.column(project_distance)
+                t.column(meal)
+                t.column(parking)
+                t.column(toll_office)
+                t.column(toll_client)
+                t.column(tag)
+                t.column(leave_from)
+                t.column(leave_to)
+                t.column(leave_project)
+                t.column(leave_stats)
+            })
+            
+            count = try mileageDb.scalar(users.filter(new_date == dateField.text!)
+                .filter(activity == activityField.text!)
+                .filter(project == projectListField.text!).count)
+        } catch {
+            print("SQLite Error")
+            print(error.localizedDescription)
+        }
+        return count
     }
 }

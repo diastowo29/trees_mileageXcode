@@ -124,10 +124,12 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                 t.column(taxi_time)
                 t.column(trx_id)
             })
-            for user in try mileageDb.prepare(users.filter(name == SomethingAwesome.usercode)) {
+            for user in try mileageDb.prepare(users
+                .filter(name == SomethingAwesome.usercode)
+                .order(new_date.asc)) {
                 var taxiCount = 0
                 for taxi in try mileageDb.prepare(taxi_table.filter(trx_id == String(user[id]))){
-                    let voucher_array = [
+                    var voucher_array = [
                         "voucher_id": String(taxi[voucher_id]),
                         "voucher_number": taxi[taxi_voucher],
                         "price": taxi[taxi_amount],
@@ -138,6 +140,7 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                     ]
                     taxiCount += 1
                     all_voucher_array.append(voucher_array)
+                    voucher_array.removeAll()
                 }
                 let new_trx_array = [
                     "mileage":[
@@ -251,8 +254,8 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                 cell.imageView?.image = UIImage(named: "calendar")
             }
         } else {
-            cell.textLabel?.text = self.trx_empty["mileage"] as? String
-            cell.detailTextLabel?.text = self.trx_empty["mileage_data"] as? String
+            cell.textLabel?.text = self.trx_empty["mileage"]
+            cell.detailTextLabel?.text = self.trx_empty["mileage_data"]
         }
         return cell
     }
@@ -266,10 +269,6 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
         var curr_mileageCount = 0
         var claiml = [Dictionary<String, Any>]()
         var claim = [Dictionary<String, Any>]()
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let dateResult = formatter.string(from: date)
         claim.removeAll()
         if (selectRow.count > 0) {
             loadingView.alpha = 1
@@ -309,6 +308,13 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                         postMileage(parametersData: absence, apiUrl: SomethingAwesome.urlAbsenceMany, activity: "leave", countLeave: leaveCount, countMileage: mileageCount, thereisLeave: isLeave, thereisMileage: isMileage)
                     }
                 } else {
+                    var projectCode = ""
+                    if ((trx_array[indexRow!]["mileage"]?["project_code"] as! String) == "Other") {
+                        projectCode = trx_array[indexRow!]["mileage"]?["project"] as! String
+                    } else {
+                        projectCode = (trx_array[indexRow!]["mileage"]?["project_code"] as! String)
+                    }
+                    
                     curr_mileageCount += 1
                     //                print(trx_array[indexRow!])
                     let mileageList = trx_array[indexRow!]["mileage"]?["mileage_list"] as! Dictionary<String, Any>
@@ -331,7 +337,7 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                                        "toll_to": mileageList["tol_client"] as! String,
                                        "mileage": trx_array[indexRow!]["mileage"]?["project_distance"] as! String,
                                        "parking": mileageList["parking"] as! String,
-                                       "client_code": trx_array[indexRow!]["mileage"]?["project_code"] as! String,
+                                       "client_code": projectCode,
                                        "meal": mileageList["meal"] as! String,
                                        "created_by": SomethingAwesome.username,
                                        //                                   "creation_date": dateResult,

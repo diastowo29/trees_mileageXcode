@@ -38,7 +38,7 @@ class VoucherAddNewViewController: UIViewController {
             "time": timeFIeld.text!,
             "trx_id": trx_id
         ]
-        myProtocol?.createNewVoucherRow(voucher: voucher_array as! [String : String])
+        myProtocol?.createNewVoucherRow(voucher: voucher_array )
         self.navigationController?.popViewController(animated: true)
         
     }

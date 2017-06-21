@@ -77,7 +77,7 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         activityField.text = self.trx["mileage"]?["activity"] as? String
         hiddenProjectCode.text = self.trx["mileage"]?["project_code"] as? String
         distanceField.text = self.trx["mileage"]?["project_distance"] as? String
-        if ((self.trx["mileage"]?["project_code"] as! String) == "other") {
+        if ((self.trx["mileage"]?["project_code"] as! String) == "Other") {
             otherProjectField.text = self.trx["mileage"]?["project"] as? String
             projectField.text = "Other"
             otherProjectFieldContraint.constant = 30
@@ -250,6 +250,14 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
 //            }
 //        }
         
+        var projectTyped = ""
+        if (projectField.text == "Other") {
+            projectTyped = otherProjectField.text!
+            hiddenProjectCode.text = "Other"
+        } else {
+            projectTyped = projectField.text!
+        }
+        
         do {
             let path = NSSearchPathForDirectoriesInDomains(
                 .documentDirectory, .userDomainMask, true
@@ -292,7 +300,7 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
             let trx = users.filter(id == ((self.trx["mileage"]?["id"]) as! Int64))
             let update =
                 trx.update(new_date <- dateField.text!,
-                           project <- projectField.text!,
+                           project <- projectTyped,
                            project_code <- hiddenProjectCode.text!,
                            project_distance <- distanceField.text!,
                            meal <- mealPrice.text!,
@@ -477,7 +485,7 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         if (voucherTaxiArray.count > 0) {
             if self.voucherTaxiArray[indexPath.row]["markDelete"] != nil {
                 let priceValue = self.voucherTaxiArray[indexPath.row]["price"]
-                print("this\(priceValue) row had to be deleted")
+                print("this\(priceValue ?? "EMPTY VALUE") row had to be deleted")
             } else {
                 cell.textLabel?.text = self.voucherTaxiArray[indexPath.row]["voucher_number"]!
                 cell.detailTextLabel?.text = self.voucherTaxiArray[indexPath.row]["price"]!
