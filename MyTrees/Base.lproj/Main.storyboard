@@ -557,8 +557,8 @@
                                                     <constraint firstItem="Ogy-ba-1v9" firstAttribute="leading" secondItem="PMH-bs-brv" secondAttribute="leading" id="rcv-jv-xKX"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZh-bE-eTw">
-                                                <rect key="frame" x="162" y="142" width="42" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZh-bE-eTw">
+                                                <rect key="frame" x="162" y="142" width="0.0" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -876,19 +876,10 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo round" translatesAutoresizingMaskIntoConstraints="NO" id="PcJ-Ch-CNA">
                                 <rect key="frame" x="67" y="269" width="240" height="128"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Trees" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWH-4m-1Zn">
-                                <rect key="frame" x="150" y="405" width="75" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" red="0.47058823529999999" green="0.63921568630000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                                <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="JWH-4m-1Zn" firstAttribute="centerX" secondItem="clz-D3-KyE" secondAttribute="centerX" id="53r-tT-3w9"/>
                             <constraint firstItem="PcJ-Ch-CNA" firstAttribute="leading" secondItem="clz-D3-KyE" secondAttribute="leadingMargin" constant="51" id="DNV-Qg-Sja"/>
-                            <constraint firstItem="JWH-4m-1Zn" firstAttribute="top" secondItem="PcJ-Ch-CNA" secondAttribute="bottom" constant="8" id="N1w-CH-51N"/>
                             <constraint firstItem="PcJ-Ch-CNA" firstAttribute="top" secondItem="CA6-VU-LXP" secondAttribute="bottom" constant="249" id="SXd-b5-J8t"/>
                             <constraint firstItem="PcJ-Ch-CNA" firstAttribute="centerX" secondItem="clz-D3-KyE" secondAttribute="centerX" id="ZMn-OP-q5o"/>
                             <constraint firstItem="PcJ-Ch-CNA" firstAttribute="centerY" secondItem="clz-D3-KyE" secondAttribute="centerY" id="cw6-2v-dc3"/>
@@ -1553,8 +1544,8 @@
                                                     <constraint firstItem="rM6-XU-QIw" firstAttribute="top" secondItem="7pu-zi-SVI" secondAttribute="bottom" constant="8" id="pZO-5x-BNz"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRA-7y-tVO">
-                                                <rect key="frame" x="161.5" y="141" width="42" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRA-7y-tVO">
+                                                <rect key="frame" x="161.5" y="141" width="0.0" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -2311,6 +2302,6 @@
         <image name="submit" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="L21-jv-Blt"/>
+        <segue reference="aeS-Sb-9Ki"/>
     </inferredMetricsTieBreakers>
 </document>

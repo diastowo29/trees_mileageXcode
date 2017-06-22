@@ -423,7 +423,11 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
             errorDuplicate()
         } else {
             if ((dateField.text?.isEmpty)! || (activityField.text?.isEmpty)! || (projectListField.text?.isEmpty)!) {
-                errorDataEmpty()
+                if (activityField.text?.lowercased() == "office") {
+                    dbProcess(data: myNewArray)
+                } else {
+                    errorDataEmpty()
+                }
             } else {
                 dbProcess(data: myNewArray)
             }

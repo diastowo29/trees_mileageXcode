@@ -24,7 +24,6 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
     var usePickerData = [Dictionary<String,String>]()
     
     var deletedRow = [String]()
-    var deletedRowat = [String]()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -54,6 +53,7 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getClientLists()
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
@@ -75,6 +75,11 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         dateField.backgroundColor = disableColor
         dateField.text = self.trx["mileage"]?["date"] as? String
         activityField.text = self.trx["mileage"]?["activity"] as? String
+        if (activityField.text == "Office") {
+            projectField.text = ""
+            projectField.backgroundColor = disableColor
+            projectField.isUserInteractionEnabled = false
+        }
         hiddenProjectCode.text = self.trx["mileage"]?["project_code"] as? String
         distanceField.text = self.trx["mileage"]?["project_distance"] as? String
         if ((self.trx["mileage"]?["project_code"] as! String) == "Other") {
@@ -183,10 +188,31 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        let newData = ["code": "dummy", "name": "-Select One-", "distance": "0"]
+        customerPickerData.append(newData)
+        projectPickerData.append(newData)
+        
+//        if (newVoucherTaxi.count) > 0 {
+//            let voucherIndex = (newVoucherTaxi.count) - 1
+//            voucherTaxiArray.append(newVoucherTaxi[voucherIndex])
+//        }
+        tableView.reloadData()
+    }
+    
     func deleteRowWithId (value: String) {
         if (!deletedRow.contains(value)) {
             deletedRow.append(value)
         }
+    }
+    
+    func deleteRowat(value: String) {
+        self.voucherTaxiArray.remove(at: Int(value)!)
+    }
+    
+    func createNewVoucherRow(voucher: [String:String]) {
+        self.newVoucherTaxi.append(voucher)
+        voucherTaxiArray.append(voucher)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -220,24 +246,16 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    func deleteRowat(value: String) {
-        if (!deletedRowat.contains(value)) {
-            self.voucherTaxiArray[Int(value)!]["markDelete"] = "delete"
-            deletedRowat.append(value)
-        }
-    }
-    
-    func createNewVoucherRow(voucher: [String:String]) {
-        self.newVoucherTaxi.append(voucher)
-    }
-    
     @IBAction func goUpdate(_ sender: Any) {
-        for deletedVoucher in voucherTaxiArray {
-            if (deletedVoucher["voucher_id"] == nil) {
-                addNewTaxiVoucher(data: deletedVoucher)
+        for newVoucher in voucherTaxiArray {
+            if (newVoucher["voucher_id"] == nil) {
+                addNewTaxiVoucher(data: newVoucher)
             }
-            if (deletedVoucher["markDelete"] != nil) {
-                deleteTaxiRow(id: Int64(deletedVoucher["voucher_id"]!)!)
+        }
+        if (deletedRow.count > 0) {
+            for i in 0 ..< deletedRow.count {
+                print("delete: \(deletedRow[i])")
+                deleteTaxiRow(id: Int64(deletedRow[i])!)
             }
         }
         
@@ -379,20 +397,6 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        let newData = ["code": "dummy", "name": "-Select One-", "distance": "0"]
-        customerPickerData.append(newData)
-        projectPickerData.append(newData)
-        
-        getClientLists()
-        
-        if (newVoucherTaxi.count) > 0 {
-            let voucherIndex = (newVoucherTaxi.count) - 1
-            voucherTaxiArray.append(newVoucherTaxi[voucherIndex])
-            tableView.reloadData()
-        }
-    }
-    
     func getClientLists () {
         do {
             let path = NSSearchPathForDirectoriesInDomains(
@@ -466,6 +470,7 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
 //        print(self.voucherTaxiArray[indexPath.row]["row"]!)
         let nextViewController = storyboard?.instantiateViewController(withIdentifier: "deleteViewController") as! VoucherEditViewController
         nextViewController.myDeleteProtocol = self
+        nextViewController.voucherID = String(indexPath.row)
         nextViewController.voucherTaxies = self.voucherTaxiArray[indexPath.row]
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
@@ -476,17 +481,17 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         if(voucherTaxiArray.count == 0) {
             return self.items.count
         } else {
-            return self.voucherTaxiArray.count;
+            return (self.voucherTaxiArray.count);
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         if (voucherTaxiArray.count > 0) {
-            if self.voucherTaxiArray[indexPath.row]["markDelete"] != nil {
+            if (self.voucherTaxiArray[indexPath.row]["markDelete"] != nil) {
                 let priceValue = self.voucherTaxiArray[indexPath.row]["price"]
-                print("this\(priceValue ?? "EMPTY VALUE") row had to be deleted")
-            } else {
+                print("this \(priceValue ?? "EMPTY VALUE") row had to be deleted")
+            } else if (self.voucherTaxiArray[indexPath.row]["markDelete"] == nil) {
                 cell.textLabel?.text = self.voucherTaxiArray[indexPath.row]["voucher_number"]!
                 cell.detailTextLabel?.text = self.voucherTaxiArray[indexPath.row]["price"]!
             }
@@ -505,7 +510,6 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         alertController.addAction(confirmAction)
-        
         self.present(alertController, animated: true, completion: nil)
     }
     

@@ -289,7 +289,7 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
                 if ((trx_array[indexRow!]["mileage"]?["tag"] as! String) == "leave") {
                     curr_leaveCount += 1
                     var absenceStats = ""
-                    if (trx_array[indexRow!]["mileage"]?["project_code"] as! String).contains("Cuti") {
+                    if (trx_array[indexRow!]["mileage"]?["leave_stats"] as! String) == "Cuti" {
                         absenceStats = "1"
                     } else {
                         absenceStats = "2"

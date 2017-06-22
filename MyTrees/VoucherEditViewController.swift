@@ -28,14 +28,11 @@ class VoucherEditViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(voucherTaxies)
         voucherNumberFIeld.text = voucherTaxies["voucher_number"]! 
         fromField.text = voucherTaxies["from"]!
         toField.text = voucherTaxies["to"]!
         priceField.text = voucherTaxies["price"]!
         timeField.text = voucherTaxies["time"]!
-        
-        voucherID = voucherTaxies["row"]!
     }
     
     @IBAction func goBack(_ sender: UIBarButtonItem) {
