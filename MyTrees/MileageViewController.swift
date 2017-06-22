@@ -420,14 +420,18 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
             ]
         ]
         if (checkDuplicateRow() > 0){
-            let duplicateAlertContr = UIAlertController(title: "Error", message: "Row with same Date and Project is already exist.", preferredStyle: .alert)
-            let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
-                duplicateAlertContr.dismiss(animated: true, completion: nil)}
-            duplicateAlertContr.addAction(confirmAction)
-            present(duplicateAlertContr, animated: true, completion: nil)
+            errorDuplicate()
         } else {
             dbProcess(data: myNewArray)
         }
+    }
+    
+    func errorDuplicate () {
+        let duplicateAlertContr = UIAlertController(title: "Error", message: "Row with same Date and Project is already exist.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
+            duplicateAlertContr.dismiss(animated: true, completion: nil)}
+        duplicateAlertContr.addAction(confirmAction)
+        present(duplicateAlertContr, animated: true, completion: nil)
     }
     
     func dbProcess(data:[String:Dictionary<String, Any>]) {
