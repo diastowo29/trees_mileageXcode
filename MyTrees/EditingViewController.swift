@@ -128,14 +128,14 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let projectPicker:UIPickerView = UIPickerView()
         projectPicker.tag = 1
-        projectPicker.delegate = self as? UIPickerViewDelegate
-        projectPicker.dataSource = self as? UIPickerViewDataSource
+        projectPicker.delegate = self
+        projectPicker.dataSource = self
         activityField.inputView = projectPicker
         
         let newProjectPicker:UIPickerView = UIPickerView()
         newProjectPicker.tag = 2
-        newProjectPicker.delegate = self as? UIPickerViewDelegate
-        newProjectPicker.dataSource = self as? UIPickerViewDataSource
+        newProjectPicker.delegate = self
+        newProjectPicker.dataSource = self
         projectField.inputView = newProjectPicker
         
         activityField.inputAccessoryView = toolBar
