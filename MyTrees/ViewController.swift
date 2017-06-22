@@ -139,12 +139,24 @@ class ViewController: BaseViewController , UIPickerViewDelegate, UIPickerViewDat
         if (checkDuplicateRow() > 0) {
             errorDuplicate()
         } else {
-            dbProcess()
+            if ((statusField.text?.isEmpty)!) {
+                errorDataEmpty()
+            } else {
+                dbProcess()
+            }
         }
     }
     
     func errorDuplicate () {
         let duplicateAlertContr = UIAlertController(title: "Error", message: "Row with same Date and Project is already exist.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
+            duplicateAlertContr.dismiss(animated: true, completion: nil)}
+        duplicateAlertContr.addAction(confirmAction)
+        present(duplicateAlertContr, animated: true, completion: nil)
+    }
+    
+    func errorDataEmpty () {
+        let duplicateAlertContr = UIAlertController(title: "Error", message: "Some field is empty", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
             duplicateAlertContr.dismiss(animated: true, completion: nil)}
         duplicateAlertContr.addAction(confirmAction)
