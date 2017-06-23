@@ -5,7 +5,7 @@ import Foundation
 
 class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource, createNewVoucherMileage {
 
-    let myPickerData = ["-Activity-", "Project", "Sales / Pre-sales", "Office"]
+    let myPickerData = ["-Select One-", "Project", "Sales / Pre-sales", "Office"]
     var projectPickerData = [Dictionary<String,String>]()
     var customerPickerData = [Dictionary<String,String>]()
     var usePickerData = [Dictionary<String,String>]()
@@ -47,8 +47,13 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var tolSwitch: UISwitch!
     @IBOutlet weak var taxiSwitch: UISwitch!
     @IBOutlet weak var addTaxiButton: UIButton!
+    @IBOutlet weak var personalSwitch: UISwitch!
     
     var voucherTaxiDict = Dictionary<String,String>()
+    var mealAmount: Int { return mealFIeld.string.digits.integer }
+    var tollOffamount: Int { return tolFromOfficeField.string.digits.integer }
+    var tollCliamount: Int { return tolFromClientField.string.digits.integer }
+    var parkingAmount: Int { return parkingField.string.digits.integer }
     
     let disableColor = UIColor.init(colorLiteralRed: (240/255), green: (236/255), blue: (243/255), alpha: 1)
     
@@ -56,6 +61,10 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         voucherTaxiArray.removeAll()
         super.viewDidLoad()
         self.addSlideMenuButton()
+        mealFIeld.textAlignment = .right
+        tolFromOfficeField.textAlignment = .right
+        tolFromClientField.textAlignment = .right
+        parkingField.textAlignment = .right
         
         projectListField.isUserInteractionEnabled = false
         projectListField.backgroundColor = disableColor
@@ -89,8 +98,10 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         
         projectListField.inputAccessoryView = toolBar
         activityField.inputAccessoryView = toolBar
+        
+        distanceField.text = "0"
     }
-    
+
     @IBAction func giveTodayDate(_ sender: UITextField) {
         let uiDate = UIDatePicker()
         let timeFormatter = DateFormatter()
@@ -98,6 +109,22 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         if (dateField.text?.isEmpty)! {
             dateField.text = timeFormatter.string(from: uiDate.date)
         }
+    }
+    
+    @IBAction func mealPriceChanged(_ sender: UITextField) {
+        mealFIeld.text = Formatter.decimal.string(from: mealAmount as NSNumber)
+    }
+    
+    @IBAction func tolOfficeChanged(_ sender: UITextField) {
+        tolFromOfficeField.text = Formatter.decimal.string(from: tollOffamount as NSNumber)
+    }
+    
+    @IBAction func tolClientChanged(_ sender: UITextField) {
+        tolFromClientField.text = Formatter.decimal.string(from: tollCliamount as NSNumber)
+    }
+    
+    @IBAction func parkingChanged(_ sender: UITextField) {
+        parkingField.text = Formatter.decimal.string(from: parkingAmount as NSNumber)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -211,6 +238,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
             mealPriceHeight.constant = 30
             // childViewHeight.constant = childViewHeight.constant + 30
         } else {
+            mealFIeld.text = ""
             mealPriceHeight.constant = 0
             // childViewHeight.constant = childViewHeight.constant - 30
         }
@@ -221,6 +249,7 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
             parkingPriceHeight.constant = 30
             // childViewHeight.constant = childViewHeight.constant + 30
         } else {
+            parkingField.text = ""
             parkingPriceHeight.constant = 0
             // childViewHeight.constant = childViewHeight.constant - 30
         }
@@ -232,6 +261,8 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
             tolContainer.alpha = 1
             // childViewHeight.constant = childViewHeight.constant + 66
         } else {
+            tolFromOfficeField.text = ""
+            tolFromClientField.text = ""
             tolContainerHeight.constant = 0
             tolContainer.alpha = 0
             // childViewHeight.constant = childViewHeight.constant - 66
@@ -288,6 +319,10 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
             parkingPriceHeight.constant = 30
             parkingSwitch.isEnabled = true
         } else {
+            distanceField.text = ""
+            parkingField.text = ""
+            tolFromOfficeField.text = ""
+            tolFromClientField.text = ""
             distanceField.alpha = 0
             distanceLabel.alpha = 0
             if(parkingSwitch.isOn){
@@ -391,6 +426,19 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
     }
     
     @IBAction func submitMileage(_ sender: UIBarButtonItem) {
+        var distance = "0"
+        if (personalSwitch.isOn) {
+            distance = distanceField.text!
+        } else {
+            distance = "0"
+        }
+        
+        if (projectListField.text == "-Select One-") {
+            projectListField.text = ""
+        }
+        if (activityField.text == "-Select One-") {
+            activityField.text = ""
+        }
         var taxies = Dictionary<String,AnyObject>()
         taxies["taxies"] = self.voucherTaxiArray as AnyObject
         
@@ -409,12 +457,12 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
                 "activity": activityField.text!,
                 "project": projectTyped,
                 "project_code": hiddenProjectCode.text ?? "Empty" as String,
-                "project_distance": distanceField.text ?? "Empty" as String,
+                "project_distance": distance,
                 "mileage_list":[
-                    "meal": mealFIeld.text!,
-                    "parking": parkingField.text!,
-                    "tol_office": tolFromOfficeField.text!,
-                    "tol_client": tolFromClientField.text!,
+                    "meal": String(describing: mealAmount),
+                    "parking": String(describing: parkingAmount),
+                    "tol_office": String(describing: tollOffamount),
+                    "tol_client": String(describing: tollCliamount),
                     "taxies": self.voucherTaxiArray
                 ]
             ]
@@ -656,4 +704,29 @@ class MileageViewController: BaseViewController, UIPickerViewDelegate, UIPickerV
         }
         return count
     }
+}
+
+extension NumberFormatter {
+    convenience init(numberStyle: NumberFormatter.Style) {
+        self.init()
+        self.numberStyle = numberStyle
+    }
+}
+struct Formatter {
+    static let decimal = NumberFormatter(numberStyle: .decimal)
+}
+extension UITextField {
+    var string: String { return text ?? "" }
+}
+
+extension String {
+    private static var digitsPattern = UnicodeScalar("0")..."9"
+    var digits: String {
+        return unicodeScalars.filter { String.digitsPattern ~= $0 }.string
+    }
+    var integer: Int { return Int(self) ?? 0 }
+}
+
+extension Sequence where Iterator.Element == UnicodeScalar {
+    var string: String { return String(String.UnicodeScalarView(self)) }
 }

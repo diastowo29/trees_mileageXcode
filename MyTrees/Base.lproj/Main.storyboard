@@ -187,7 +187,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b4p-e3-i1V">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="766"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="640"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="brd-s0-2Fb">
                                                 <rect key="frame" x="8" y="8" width="39" height="21"/>
@@ -260,7 +260,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZuE-bk-dw7" userLabel="mealView">
-                                                <rect key="frame" x="8" y="253" width="359" height="64"/>
+                                                <rect key="frame" x="8" y="253" width="359" height="34"/>
                                                 <subviews>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="L2X-wn-8qd">
                                                         <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
@@ -275,13 +275,16 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Price (Rp)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z8M-Kc-XZx">
-                                                        <rect key="frame" x="57" y="34" width="294" height="30"/>
+                                                        <rect key="frame" x="57" y="34" width="294" height="0.0"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="30" id="Zcw-JS-4tW"/>
+                                                            <constraint firstAttribute="height" id="Zcw-JS-4tW"/>
                                                         </constraints>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                        <connections>
+                                                            <action selector="mealPriceChanged:" destination="51h-pF-kEz" eventType="editingChanged" id="vIm-e9-zUW"/>
+                                                        </connections>
                                                     </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -297,13 +300,13 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Claim Transport" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otD-xK-y0z">
-                                                <rect key="frame" x="8" y="325" width="132" height="21"/>
+                                                <rect key="frame" x="8" y="295" width="132" height="21"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                 <color key="textColor" red="0.47058823529999999" green="0.63921568630000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WsA-ER-NPl" userLabel="personalView">
-                                                <rect key="frame" x="8" y="354" width="359" height="216"/>
+                                                <rect key="frame" x="8" y="324" width="359" height="120"/>
                                                 <subviews>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IMy-2f-zWu">
                                                         <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
@@ -318,7 +321,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L6j-v5-LUZ" userLabel="parkingView">
-                                                        <rect key="frame" x="57" y="39" width="302" height="64"/>
+                                                        <rect key="frame" x="57" y="39" width="302" height="34"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jJ-3y-Mx7">
                                                                 <rect key="frame" x="57" y="5" width="58" height="21"/>
@@ -327,13 +330,16 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Total Price" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nzu-KH-VA7">
-                                                                <rect key="frame" x="57" y="34" width="237" height="30"/>
+                                                                <rect key="frame" x="57" y="34" width="237" height="0.0"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="30" id="CQD-FJ-P11"/>
+                                                                    <constraint firstAttribute="height" id="CQD-FJ-P11"/>
                                                                 </constraints>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                <connections>
+                                                                    <action selector="parkingChanged:" destination="51h-pF-kEz" eventType="editingChanged" id="YZm-yX-KRw"/>
+                                                                </connections>
                                                             </textField>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UfT-vX-Vc1">
                                                                 <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
@@ -355,7 +361,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJr-KZ-xhN" userLabel="tollView">
-                                                        <rect key="frame" x="57" y="111" width="294" height="105"/>
+                                                        <rect key="frame" x="57" y="81" width="294" height="39"/>
                                                         <subviews>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2xr-IL-I8l">
                                                                 <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
@@ -369,8 +375,8 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h9i-YT-6g1" userLabel="tollFieldContainer">
-                                                                <rect key="frame" x="0.0" y="39" width="294" height="66"/>
+                                                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h9i-YT-6g1" userLabel="tollFieldContainer">
+                                                                <rect key="frame" x="0.0" y="39" width="294" height="0.0"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From Office" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pk1-zF-fyC">
                                                                         <rect key="frame" x="8" y="8" width="91" height="21"/>
@@ -383,6 +389,9 @@
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                        <connections>
+                                                                            <action selector="tolOfficeChanged:" destination="51h-pF-kEz" eventType="editingChanged" id="fd6-Ef-fsv"/>
+                                                                        </connections>
                                                                     </textField>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From Client" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pXy-dz-8fY">
                                                                         <rect key="frame" x="8" y="39" width="88" height="21"/>
@@ -395,6 +404,9 @@
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                        <connections>
+                                                                            <action selector="tolClientChanged:" destination="51h-pF-kEz" eventType="editingChanged" id="BzH-vZ-Jfh"/>
+                                                                        </connections>
                                                                     </textField>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -407,7 +419,7 @@
                                                                     <constraint firstAttribute="trailing" secondItem="2cd-Gy-K5T" secondAttribute="trailing" constant="8" id="Xj5-Gi-eKD"/>
                                                                     <constraint firstItem="grz-tH-1R1" firstAttribute="top" secondItem="h9i-YT-6g1" secondAttribute="top" constant="4" id="bg3-xu-vex"/>
                                                                     <constraint firstItem="grz-tH-1R1" firstAttribute="leading" secondItem="pk1-zF-fyC" secondAttribute="trailing" constant="8" id="eKY-9u-h7K"/>
-                                                                    <constraint firstAttribute="height" constant="66" id="gyX-iy-8EH"/>
+                                                                    <constraint firstAttribute="height" id="gyX-iy-8EH"/>
                                                                     <constraint firstItem="pXy-dz-8fY" firstAttribute="top" secondItem="pk1-zF-fyC" secondAttribute="bottom" constant="10" id="ljO-B9-KcM"/>
                                                                     <constraint firstAttribute="trailing" secondItem="grz-tH-1R1" secondAttribute="trailing" constant="8" id="xiQ-Wg-ubj"/>
                                                                 </constraints>
@@ -460,7 +472,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PMH-bs-brv" userLabel="taxiView">
-                                                <rect key="frame" x="8" y="578" width="359" height="188"/>
+                                                <rect key="frame" x="8" y="452" width="359" height="188"/>
                                                 <subviews>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ogy-ba-1v9">
                                                         <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
@@ -649,6 +661,7 @@
                         <outlet property="parkingField" destination="Nzu-KH-VA7" id="izm-wM-QF2"/>
                         <outlet property="parkingPriceHeight" destination="CQD-FJ-P11" id="nJO-yG-YSj"/>
                         <outlet property="parkingSwitch" destination="UfT-vX-Vc1" id="SdZ-EF-6pO"/>
+                        <outlet property="personalSwitch" destination="IMy-2f-zWu" id="Lde-fn-S0s"/>
                         <outlet property="projectListField" destination="wSi-WN-qqQ" id="HZ4-BF-aza"/>
                         <outlet property="scrollView" destination="liw-Ep-FOc" id="63T-Qq-hTH"/>
                         <outlet property="taxiContainer" destination="fY8-v1-vUQ" id="4ao-kf-kFk"/>
@@ -1277,6 +1290,9 @@
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                        <connections>
+                                                            <action selector="mealPriceChanged:" destination="z5M-a7-Pmr" eventType="editingChanged" id="td0-ow-BQD"/>
+                                                        </connections>
                                                     </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1329,6 +1345,9 @@
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                <connections>
+                                                                    <action selector="parkingChanged:" destination="z5M-a7-Pmr" eventType="editingChanged" id="fPZ-Vu-ejL"/>
+                                                                </connections>
                                                             </textField>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="NKV-38-bMC">
                                                                 <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
@@ -1378,6 +1397,9 @@
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                        <connections>
+                                                                            <action selector="tolOfficeChanged:" destination="z5M-a7-Pmr" eventType="editingChanged" id="yYn-4S-yvg"/>
+                                                                        </connections>
                                                                     </textField>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From Client" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbJ-4g-xfU">
                                                                         <rect key="frame" x="8" y="39" width="88" height="21"/>
@@ -1390,6 +1412,9 @@
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                        <connections>
+                                                                            <action selector="tolClientChanged:" destination="z5M-a7-Pmr" eventType="editingChanged" id="yfW-EU-zeu"/>
+                                                                        </connections>
                                                                     </textField>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2018,6 +2043,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="priceChanged:" destination="Iyg-CV-J2D" eventType="editingChanged" id="6gP-hj-QZ7"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="etD-or-XUS">
                                                 <rect key="frame" x="8" y="276" width="41" height="21"/>
@@ -2204,6 +2232,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="priceChanged:" destination="aeG-Z5-fet" eventType="editingChanged" id="pE8-UV-N2g"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fUE-Az-Pp4">
                                                 <rect key="frame" x="8" y="276" width="41" height="21"/>
@@ -2292,7 +2323,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3110" y="-1308"/>
+            <point key="canvasLocation" x="-730" y="-1410"/>
         </scene>
     </scenes>
     <resources>

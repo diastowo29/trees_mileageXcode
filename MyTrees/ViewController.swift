@@ -18,7 +18,7 @@ class ViewController: BaseViewController , UIPickerViewDelegate, UIPickerViewDat
     @IBOutlet weak var hiddenProjectCode: UILabel!
     
     let myPickerData = ["-Project List-", "IDSmed", "Fif Group", "Tiki Raden Saleh", "Wika Group", "Other"]
-    let statusData = ["-Chose one-", "Cuti", "Sakit"]
+    let statusData = ["-Select One-", "Cuti", "Sakit"]
     
     var projectPickerData = [Dictionary<String,String>]()
     var customerPickerData = [Dictionary<String,String>]()

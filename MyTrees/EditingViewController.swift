@@ -48,6 +48,11 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tollSwitch: UISwitch!
     @IBOutlet weak var taxiSwitch: UISwitch!
     
+    var mealAmount: Int { return mealPrice.string.digits.integer }
+    var tollOffamount: Int { return tolOffice.string.digits.integer }
+    var tollCliamount: Int { return tolClient.string.digits.integer }
+    var parkingAmount: Int { return parkingPrice.string.digits.integer }
+    
     let disableColor = UIColor.init(colorLiteralRed: (240/255), green: (236/255), blue: (243/255), alpha: 1)
 
     override func viewDidLoad() {
@@ -56,6 +61,7 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         getClientLists()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -150,6 +156,15 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
         parkingPrice.inputAccessoryView = toolBar
         tolClient.inputAccessoryView = toolBar
         tolOffice.inputAccessoryView = toolBar
+        
+        mealPrice.textAlignment = .right
+        mealPrice.text = Formatter.decimal.string(from: mealAmount as NSNumber)
+        tolOffice.textAlignment = .right
+        tolOffice.text = Formatter.decimal.string(from: tollOffamount as NSNumber)
+        tolClient.textAlignment = .right
+        tolClient.text = Formatter.decimal.string(from: tollCliamount as NSNumber)
+        parkingPrice.textAlignment = .right
+        parkingPrice.text = Formatter.decimal.string(from: parkingAmount as NSNumber)
     }
     
     func doneToolbar () {
@@ -217,6 +232,22 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
+    }
+    
+    @IBAction func mealPriceChanged(_ sender: UITextField) {
+        sender.text = Formatter.decimal.string(from: mealAmount as NSNumber)
+    }
+    
+    @IBAction func tolOfficeChanged(_ sender: UITextField) {
+        sender.text = Formatter.decimal.string(from: tollOffamount as NSNumber)
+    }
+    
+    @IBAction func tolClientChanged(_ sender: UITextField) {
+        sender.text = Formatter.decimal.string(from: tollCliamount as NSNumber)
+    }
+    
+    @IBAction func parkingChanged(_ sender: UITextField) {
+        sender.text = Formatter.decimal.string(from: parkingAmount as NSNumber)
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -321,10 +352,10 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
                            project <- projectTyped,
                            project_code <- hiddenProjectCode.text!,
                            project_distance <- distanceField.text!,
-                           meal <- mealPrice.text!,
-                           parking <- parkingPrice.text!,
-                           toll_office <- tolOffice.text!,
-                           toll_client <- tolClient.text!)
+                           meal <- String(describing: mealAmount),
+                           parking <- String(describing: parkingAmount),
+                           toll_office <- String(describing: tollOffamount),
+                           toll_client <- String(describing: tollCliamount))
             
             _ = try mileageDb.run(update)
             saveSuccess()
@@ -530,8 +561,12 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
             tollSwitch.isUserInteractionEnabled = true
             tolClient.isUserInteractionEnabled = true
             tolOffice.isUserInteractionEnabled = true
+            distanceField.isUserInteractionEnabled = true
             
+            distanceField.backgroundColor = UIColor.clear
         } else {
+            distanceField.isUserInteractionEnabled = false
+            distanceField.backgroundColor = disableColor
             parkingSwitch.isOn = false
             parkingSwitch.isUserInteractionEnabled = false
             parkingPrice.isUserInteractionEnabled = false
@@ -570,3 +605,4 @@ class EditingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
 }
+

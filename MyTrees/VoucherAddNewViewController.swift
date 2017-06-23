@@ -21,11 +21,14 @@ class VoucherAddNewViewController: UIViewController {
     @IBOutlet weak var timeFIeld: UITextField!
     @IBOutlet weak var priceField: UITextField!
     
+    var taxiPrice: Int { return priceField.string.digits.integer }
+    
     var trx_id:String = ""
     var myProtocol:createNewVoucher?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        priceField.textAlignment = .right
         let datePicker:UIDatePicker = UIDatePicker()
         datePicker.datePickerMode = UIDatePickerMode.time
         datePicker.locale = NSLocale(localeIdentifier: "en_GB") as Locale
@@ -55,6 +58,10 @@ class VoucherAddNewViewController: UIViewController {
         timeFIeld.resignFirstResponder()
     }
     
+    @IBAction func priceChanged(_ sender: UITextField) {
+        sender.text = Formatter.decimal.string(from: taxiPrice as NSNumber)
+    }
+    
     func handleTimePicker (sender: UIDatePicker) {
         let timeFormatter = DateFormatter()
         timeFormatter.timeStyle = .medium
@@ -67,7 +74,7 @@ class VoucherAddNewViewController: UIViewController {
     @IBAction func goSaveVoucher(_ sender: Any) {
         let voucher_array = [
             "voucher_number": voucherNumberField.text!,
-            "price": priceField.text!,
+            "price": String(describing: taxiPrice),
             "from": fromField.text!,
             "to": toField.text!,
             "time": timeFIeld.text!,

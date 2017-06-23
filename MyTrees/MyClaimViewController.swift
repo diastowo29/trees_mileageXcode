@@ -25,6 +25,8 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
     var trx_empty = ["mileage": "No Data to Display", "mileage_data": ""]
     var trx_array = [Dictionary<String, Dictionary<String,Any>>()]
     
+    var errorTry = 0
+    
     override func viewDidLoad() {
         self.trx_array.removeAll()
         super.viewDidLoad()
@@ -175,8 +177,12 @@ class MyClaimViewController: BaseViewController, UITabBarDelegate, UITableViewDe
             }
             
         } catch {
+            errorTry += 1
             print("SQLite Error")
             print(error.localizedDescription)
+            if (errorTry < 3) {
+                getList()
+            }
         }
     }
     
